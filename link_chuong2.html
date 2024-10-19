@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Chivo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="chuong1.css">
+    <title>Chương II</title>
+</head>
+<body>
+    <div class="chapter-background">
+        <h1 style="text-align: center; color: rgba(70, 221, 176, 1);">CHƯƠNG II: QUY HOẠCH ĐỘNG TRÊN Ô LƯỚI</h1>
+	<h2 style="text-align: left; color: white;">Bài toán 1: Di chuyển trên ô lưới</h2>
+    <p class="content">
+        Link bài: 
+        <a href="https://oj.vnoi.info/problem/atcoder_dp_h" target="_blank" class="link">
+            https://oj.vnoi.info/problem/atcoder_dp_h
+        </a>
+    </p>
+    <div class="content">
+        <p class="bold-large">Đề bài:</p>
+        <p>Cho một ô lưới kích cỡ <strong>N x M</strong>, có ô chứa ‘.’ thì đi được, ô chứa ‘#’ thì không cho đi. 
+        Mỗi ô thì chỉ có thể đi sang ô liền kề bên phải hoặc ô liền kề phía dưới. 
+        Tính số cách đi từ (1, 1) đến (N, M) lấy phần dư cho mod.</p>
+
+        <p class="bold-large">Ý tưởng:</p>
+        <p>Gọi <strong>f[i][j]</strong> là số cách đi từ ô (1, 1) đến ô (i, j). 
+        Ta có thể đi qua ô kề phải hoặc kề dưới nên muốn đến ô (i, j) thì phải đi từ ô (i - 1, j) hoặc (i, j - 1). 
+        Nếu ô (i, j) chứa vật cản thì ta bỏ qua không tính ô đó.</p>
+
+        <p class="bold-large">Trường hợp cơ sở:</p>
+        <p class="bold-large">f[1][1] = 1</p>
+        <p>Cách tính <strong>F[i][j]</strong>:</p>
+        <p class="bold-large">F[i][j] = f[i - 1][j] + f[i][j - 1]</p>
+        <p>Độ phức tạp: <strong>O(n^2)</strong>.</p>
+    </div>
+    <h3 class="code-title" onclick="toggleCode4()" style="cursor: pointer; color: rgba(70, 221, 176, 1);">
+        CODE
+    </h3>
+    <div id="codeBlock4" class="code-block" style="display: none;">
+        <pre><code>
+    f[1][1] = 1;
+    for (int i = 1; i <= n; i++)
+        for (int j = 1; j <= m; j++)
+        {
+            if (i == 1 && j == 1) continue;
+            if (a[i][j] == '.')
+                f[i][j] = ((f[i - 1][j] % mod) + (f[i][j - 1] % mod)) % mod;
+            else f[i][j] = 0;
+        }
+    cout << f[n][m];
+        </code></pre>
+    </div>
+    <div id="additionalContent4" style="display: none; font-style: italic;">
+            Đáp án bài toán : f[n][m]. Độ phức tạp : O (n * m)
+    </div>
+    
+
+    <h2 style="text-align: left; color: white;">Bài toán 2: Đường đi có tổng lớn nhất</h2>
+    <p class="content">
+        Link bài: 
+        <a href="https://oj.vnoi.info/problem/qbmax" target="_blank" class="link">
+            https://oj.vnoi.info/problem/qbmax
+        </a>
+    </p>
+    <div class="content">
+        <p class="bold-large">Đề bài:</p>
+        <p>Cho ma trận <strong>M x N</strong>. Từ ô <strong>(i, j)</strong> có thể đi đến các ô <strong>(i, j + 1)</strong>, <strong>(i - 1, j + 1)</strong>, <strong>(i + 1, j + 1)</strong>. Một người đi từ ô nào đó ở cột 1 và cần sang ô nào đó ở cột n. Tìm đường đi có tổng lớn nhất.</p>
+
+        <p class="bold-large">Ý tưởng:</p>
+        <p>Tương tự như bài toán trước, ta tính giá trị ô thứ <strong>(i, j)</strong> dựa trên các ô có thể đi được đến nó. Nhưng mà, chúng ta phải xét các THCS của bài toán</p>
+
+        <p class="bold-large">Trường hợp cơ sở:</p>
+        <ul>
+            <li>Các ô của 2 cột nằm ngoài thì gán giá trị <strong>-oo</strong>.</li>
+            <li>Các ô của cột 1 gán bằng <strong>a[i][1]</strong>.</li>
+        </ul>
+    </div>
+    <h3 class="code-title" onclick="toggleCode5()" style="cursor: pointer; color: rgba(70, 221, 176, 1);">
+        CODE
+    </h3>
+    <div id="codeBlock5" class="code-block" style="display: none;">
+        <pre><code>
+    cin >> a[i][j];
+    for (int j = 1; j <= n; j++) {
+        b[0][j] = -10000;
+        b[m + 1][j] = -10000;
+    }
+    
+    for (int i = 1; i <= m; i++)
+        b[i][1] = a[i][1];
+            
+    for (int j = 2; j <= n; j++)
+        for (int i = 1; i <= m; i++) {
+            res = max(b[i][j - 1], b[i - 1][j - 1]);
+            res = max(res, b[i + 1][j - 1]);
+            b[i][j] = res + a[i][j];
+        }
+        
+    res = -10000;
+    for (int i = 1; i <= m; i++)
+        res = max(res, b[i][n]);
+        
+    cout << res;
+        </code></pre>
+    </div>    
+    <div id="additionalContent5" style="display: none; font-style: italic;">
+        Đáp án bài toán là max của dp[1 -> m][n]. Độ phức tạp : O (m * n)
+</div>
+    <h2 style="text-align: left; color: white;">Bài tập thêm</h2>
+    <div class="chapter-background">
+    <h3 class="subtitle" style="text-align: left; color: white; font-size: 20px;"><strong>Mức độ bình thường:</strong></h3>
+    <ul class="content">
+        <li><a class="link" href="https://cses.fi/problemset/task/1638">https://cses.fi/problemset/task/1638</a></li>
+        <li><a class="link" href="https://cses.fi/problemset/task/1746">https://cses.fi/problemset/task/1746</a></li>
+        <li><a class="link" href="https://leetcode.com/problems/maximum-non-negative-product-in-a-matrix/">https://leetcode.com/problems/maximum-non-negative-product-in-a-matrix/</a></li>
+    </ul>
+
+    <h3 class="subtitle" style="text-align: left; color: white; font-size: 20px;"><strong>Mức độ khó:</strong></h3>
+    <ul class="content">
+        <li><a class="link" href="https://oj.vnoi.info/problem/atcoder_dp_y">https://oj.vnoi.info/problem/atcoder_dp_y</a></li>
+    </ul>
+    </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

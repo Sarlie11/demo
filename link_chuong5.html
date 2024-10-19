@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Chivo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="chuong1.css">
+    <title>Chương V</title>
+</head>
+<body>
+    <div class="chapter-background">
+        <h1 style="text-align: center; color: rgba(70, 221, 176, 1);">CHƯƠNG V: MỘT SỐ KĨ THUẬT KHÁC</h1>
+        <h2 style="text-align: left; color: white;">DP tương lai</h2>
+        <p class="content">Có một số bài chúng ta thay vì tính mảng dp thông qua kết quả trước thì ta tính tại vị trí dp hiện tại ta cập nhật cho dp phía trước thì sẽ thuận tiện hơn. Sau đây là ví dụ của một bài toán.</p>
+	<img src="daysodep.png" alt="Ảnh minh họa" style="display: block; margin: auto;">
+        <div class="content">
+            <p class="bold-large">Ý tưởng:</p>
+            <p>Gọi dp[i] là số phần tử phủ xóa ít nhất để i số đầu là dãy đẹp. Xét trường hợp ta nhận thấy:</p>
+            <ul>
+                <li>
+                    <strong>Trường hợp 1:</strong> Xóa <em>a[i]</em> + 1
+                    <br>
+                    <span class="bold-range">dp[i + 1] = min(dp[i + 1], dp[i] + 1)</span>
+                </li>
+                <li>
+                    <strong>Trường hợp 2:</strong> Giữ <em>a[i]</em> + 1
+                    <br>
+                    <span class="bold-range">dp[i + a[i] + 1] = min(dp[i + a[i] + 1], dp[i])</span>
+                </li>
+            </ul>
+        </div>
+        <p class="content">
+            Đáp án cho mỗi <strong>dp[l][r][k]</strong> = max của cả 5 trường hợp đó 
+            <strong>-> dp[l][r][k] = ans</strong>
+        </p>
+        <h3 class="code-title" onclick="toggleCode10()" style="cursor: pointer; color: rgba(70, 221, 176, 1);">
+            CODE
+        </h3>
+        <div id="codeBlock10" class="code-block" style="display: none;">
+            <pre><code>
+    dp[0] = 0;
+    for(int i = 0; i <= n; i++){
+        dp[i + 1] = min(dp[i + 1], dp[i] + 1);
+        if(i + a[i + 1] + 1 <= n)
+            dp[i + a[i + 1] + 1] = min(dp[i + a[i + 1] + 1], dp[i]);
+    }
+    cout << dp[n];
+            </code></pre>
+        </div>          
+        <div id="additionalContent9" style="display: none; font-style: italic;">
+            Như vậy, từ dp[i] ta có thể tính cho dp[i + 1] hoặc dp[i + a[i + 1] + 1] cho bài toán này. 
+    </div> 
+        <h2 style="text-align: left; color: white;">DP con lắc</h2>
+            <p class="content">Thỉnh thoảng các bài toán của bạn không đủ bộ nhớ cho việc tính toán mà đặc điểm bài toán quy hoạch động lại tính trên kết quả có sẵn thì sử dụng kĩ thuật “con lắc”. Sau đây là ví dụ cho bài Knapsack. Thông thường, ta có dp[i][j] là xét đồ vật thứ i với giá trị j và tính dựa trên dp[i - 1][j - w[i]] hoặc dp[i - 1][j]. Thay vì cứ tốn nhiều ô nhớ cho i - 1 thì ta tối ưu bằng cách chỉ tính kết quả gần nhất. Vì vậy mảng dp chỉ còn ô nhớ dp[2][W].</p>  
+            <p class="bold-large">i % 2 == 0 -> dp[0][j] = max(dp[1][j], dp[1][j - w[i]])</p>
+            <p class="bold-large">i % 2 == 1 -> dp[1][j] = max(dp[0][j], dp[0][j - w[i]])</p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

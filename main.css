@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rowdies:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+
+body {
+    display: flex; /* Sử dụng flexbox để căn giữa */
+    flex-direction: column; /* Sắp xếp các phần tử theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều dọc */
+    align-items: center; /* Căn giữa theo chiều ngang */
+    height: 100vh; /* Chiều cao 100% của viewport */
+    margin: 0; /* Xóa khoảng cách mặc định */
+    background-color: #282c34; /* Màu nền tùy chọn */
+}
+
+.title {
+    color: rgba(70, 221, 176, 1); /* Màu chữ tiêu đề */
+    font-size: 36px; /* Kích thước chữ tiêu đề */
+    /*font-family: "Nico Moji-Regular", Helvetica;
+    margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
+    font-family: 'Audiowide', sans-serif;
+}
+
+.container {
+    display: flex; /* Sử dụng flexbox để hiển thị hình chữ nhật nằm ngang */
+    justify-content: space-between; /* Cách đều giữa các hình chữ nhật */
+    width: 80%; /* Chiều rộng tổng thể của container */
+}
+
+/* Định dạng cho các box */
+/* Định dạng cho các box */
+/* Định dạng cho các box */
+/* Định dạng cho các box */
+.box {
+    width: 18%;
+    height: 80px;
+    background: rgba(155, 164, 181, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: transform 0.3s, background-color 0.3s;
+    text-align: center;
+    position: relative;
+}
+
+/* Định dạng cho liên kết bên trong box */
+.box a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+    padding-bottom: 5px;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Tạo gạch chân đẹp bằng ::after */
+.box a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px; /* Độ dày gạch chân */
+    bottom: -3px; /* Khoảng cách từ chữ xuống gạch chân */
+    left: 0;
+    background-color: rgb(4, 58, 42); /* Màu gạch chân */
+    border-radius: 3px; /* Bo tròn gạch chân */
+    transition: width 0.3s ease-in-out;
+}
+
+/* Hiệu ứng khi hover vào liên kết */
+.box a:hover::after {
+    width: 100%; /* Gạch chân mở rộng toàn bộ */
+}
+
+/* Khi hover vào liên kết, đổi màu chữ */
+.box a:hover {
+    color: white;
+}
+
+/* Hiệu ứng hover khi di chuột qua box */
+.box:hover {
+    background-color: rgba(70, 221, 176, 1);
+    transform: scale(1.05);
+}
+
+
+
+
+
+
+

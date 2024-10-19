@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Chivo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="chuong1.css">
+    <title>Chương I</title>
+</head>
+<body>
+    <div class="chapter-background">
+        <h1 style="text-align: center; color: rgba(70, 221, 176, 1);">CHƯƠNG I: QUY HOẠCH ĐỘNG CƠ BẢN</h1>
+        <p class="content">Quy hoạch động (Dynamic Programming) là một trong những kĩ thuật quan trọng nhất trong lập trình thi đấu. Bài viết này sẽ trình bày và giải thích các khái niệm liên quan đến quy hoạch động đồng thời đưa ra các ví dụ minh họa.</p>
+	<h2 style="text-align: left; color: white;">Bài toán 1: Fibonacci</h2>
+    <div class="content">
+        <p class="bold-large">Đề bài:</p>
+        <p>Nhập từ bàn phím số <strong>n</strong>, tính số fibonacci thứ <strong>n</strong> (n <= 1e6) mod cho 1e9 + 7. Cho <strong>f[0] = 1</strong>, <strong>f[1] = 1</strong>.</p>
+
+        <p class="bold-large">Thuật toán đệ quy:</p>
+        <p class="bold-large">Ý tưởng:</p>
+        <p>Ta tạo hàm đệ quy để tính số fibonacci thứ <strong>n</strong>, sau đó hàm sẽ gọi xuống <span class="now-wrap">f(n - 1) + f(n - 2) + ... + f(2) + f(1)</span>.</p>
+    </div>
+        <!-- <p class="content"><strong>Đề bài:</strong> Nhập từ bàn phím số n, tính số fibonacci thứ n (n <= 1e6) mod cho 1e9 + 7. Cho f[0] = 1, f[1] = 1</p>*/
+        <p class="content"><strong>Thuật toán đệ quy:</strong> Ý tưởng: Ta tạo hàm đệ quy để tính số fibonacci thứ n, sau đó hàm sẽ gọi xuống f(n - 1) + f(n - 2) + … + f(2) + f(1)</p>-->
+        <h3 class="code-title" onclick="toggleCode1()" style="cursor: pointer; color: rgba(70, 221, 176, 1);">
+            CODE
+        </h3>
+        <div id="codeBlock1" class="code-block" style="display: none;">
+            <pre><code>
+    #include &lt;iostream&gt;
+    using namespace std;
+    const int mod = 1e9 + 7;
+    int n;
+    int f(int n) {
+        if (n == 0 || n == 1) return 1;
+        return ((f(n - 1) % mod) + (f(n - 2) % mod)) % mod;
+    }
+    int main() {
+        cin &gt;&gt; n;
+        cout &lt;&lt; f(n);
+    }
+            </code></pre>
+        </div>
+        <p class="content">
+            Tuy nhiên, việc gọi đệ quy sẽ tốn rất nhiều thời gian do bạn phải tính lại các số Fibonacci nhiều lần. Mỗi lần tính <span class="nowrap">f(n - 1)</span>, bạn phải tính dựa trên kết quả của <span class="nowrap">f(n - 1)</span> và <span class="nowrap">f(n - 2)</span>, và tính <span class="nowrap">f(n - 1)</span> dựa trên <span class="nowrap">f(n - 2)</span> và <span class="nowrap">f(n - 3)</span>...
+        </p>
+
+        <p class="content">
+            <strong>Thuật toán quy hoạch động:</strong><br>
+            Ý tưởng: Gọi f[i] là số Fibonacci thứ i. Dựa trên ý tưởng đệ quy, ta nhận thấy số Fibonacci thứ i được tính dựa trên kết quả có sẵn từ số Fibonacci thứ i - 1 và số Fibonacci thứ i - 2. Vì vậy, ta lập được công thức quy hoạch động:<br>
+            <p class="bold-large">
+                f[i] = f[i - 1] + f[i - 2] với i > 1
+            </p>
+            <p class="content">
+                Trường hợp cơ sở:
+            </p>
+            <p class="bold-large">
+                f[0] = 1<br>
+                f[1] = 1
+            </p>
+        </p>
+        <h3 class="code-title" onclick="toggleCode2()" style="cursor: pointer; color: rgba(70, 221, 176, 1);">
+            CODE
+        </h3>
+    
+        <div id="codeBlock2" class="code-block" style="display: none;">
+            <pre><code>
+    #include &lt;bits/stdc++.h&gt;
+    using namespace std;
+    const int mod = 1e9 + 7;
+    const int N = 1e6 + 5;
+    int n;
+    int f[N];
+    int main(){
+        cin &gt;&gt; n;
+        // Trường hợp cơ sở
+        f[0] = 1; f[1] = 1;
+        // f[i] : số fibonacci thứ i
+        for (int i = 2; i &lt;= n; i++)
+            f[i] = ((f[i - 1] % mod) + (f[i - 2] % mod)) % mod;
+        cout &lt;&lt; f[n];
+    }
+            </code></pre>
+        </div>
+        <div id="additionalContent2" style="display: none; font-style: italic;">
+            Với thuật toán này, ta chỉ cần tính f[i] dựa trên f[i - 1] + f[i - 2]. Độ phức tạp của thuật toán này vỏn vẹn chỉ có O(n).<br>
+            Bài toán tương tự tính số tribonacci thứ n.
+        </div>
+        <h2 style="text-align: left; color: white;">Bài toán 2: Knapsack</h2>
+        <p class="content">
+            Link bài: 
+            <a href="https://oj.vnoi.info/problem/atcoder_dp_d" target="_blank" class="link">
+                https://oj.vnoi.info/problem/atcoder_dp_d
+            </a>
+        </p>
+        <p class="content"><strong>Đề bài:</strong> Cho n đồ vật, mỗi đồ vật có giá trị v và trọng lượng w, hãy chọn đồ vật sao cho không quá Weight cho trước mà các đồ vật được chọn có giá trị lớn nhất.
+        </p>
+        <div class="content">
+            <p>Ý tưởng: gọi <strong>dp[i]</strong> là giá trị tối đa nhận được với trọng lượng <strong>i</strong> là lớn nhất. Ta sẽ tính từng giá trị <strong>dp[i]</strong> như sau:</p>
+            
+            <p><strong>Trường hợp cơ sở:</strong></p>
+            
+            <p>Với <strong>dp[0] = 0</strong> tức là tại trọng lượng bằng không thì không chọn được giá trị nào hết.</p>
+            
+            <p>Ta có:</p>
+            
+            <p>Trường hợp chọn đồ vật thứ <strong>i</strong> có trọng lượng là <strong>w[i]</strong> và giá trị <strong>v[i]</strong> thì:</p>
+            <ul>
+                <li class="bold-large">dp[j] = dp[j - w[i]] + v[i]</li> <!-- Bold-large cho công thức -->
+            </ul>
+            
+            <p>Trường hợp không chọn đồ vật thứ <strong>i</strong> thì:</p>
+            <ul>
+                <li class="bold-large">dp[j] = dp[j - 1]</li> <!-- Bold-large cho công thức -->
+            </ul>
+            
+            <p>Đáp án bài toán này là <strong>dp[Weight]</strong>.</p> <!-- Đáp án in đậm -->
+        </div>
+        <h3 class="code-title" onclick="toggleCode3()" style="cursor: pointer; color: rgba(70, 221, 176, 1);">
+            CODE
+        </h3>
+        <div id="codeBlock3" class="code-block" style="display: none;">
+            <pre><code>
+    dp[0] = 0;
+    for (int i = 1; i <= n; i++) {
+        for (int j = W; j >= w[i]; j--) 
+            dp[j] = max(dp[j - 1], dp[j - w[i]] + v[i]);
+    }
+    cout << dp[W];</code></pre>
+        </div>
+        <div id="additionalContent3" style="display: none; font-style: italic;">
+            Độ phức tạp : O(n * W)
+        </div>
+        <h2 style="text-align: left; color: white;">Bài toán 3: Vacation</h2>
+        <p class="content">
+            Link bài: 
+            <a href="https://oj.vnoi.info/problem/atcoder_dp_c" target="_blank" class="link">
+                https://oj.vnoi.info/problem/atcoder_dp_c
+            </a>
+        </p>
+        <div class="content">
+            <p class="bold-large">Đề bài:</p>
+            <p>Cho <strong>n</strong> ngày, mỗi ngày đều có 3 hoạt động A, B, C. Mỗi ngày thứ <strong>i</strong> phải chọn làm 1 trong 3 hoạt động để nhận điểm nhưng không được chọn trùng hoạt động giữa 2 ngày liên tiếp.</p>
+    
+            <p class="bold-large">Ý tưởng:</p>
+            <p>Gọi <strong>dp[i][j]</strong> là giá trị lớn nhất khi làm hoạt động thứ <strong>j</strong> vào ngày thứ <strong>i</strong>.</p>
+            <p>Trạng thái:</p>
+            <ul>
+                <li><strong>dp[i][0]</strong>: ngày thứ <strong>i</strong> làm hoạt động A</li>
+                <li><strong>dp[i][1]</strong>: ngày thứ <strong>i</strong> làm hoạt động B</li>
+                <li><strong>dp[i][2]</strong>: ngày thứ <strong>i</strong> làm hoạt động C</li>
+            </ul>
+            <p>Với điều kiện không làm 1 hoạt động liên tục, ta có nhận xét:</p>
+            <p>Nếu ngày <strong>i</strong> làm hoạt động thứ A thì ngày <strong>i - 1</strong> phải làm hoạt động B hoặc C. Từ đó, giá trị mảng <strong>dp[i][j]</strong> sẽ bằng <strong>dp[i - 1][z] + value</strong> với <strong>j != z</strong>.</p>
+            
+            <p>
+                <span class="bold-large">dp[i][0] = max(dp[i - 1][1], dp[i - 1][2]) + a[i]</span> <br> 
+                <span class="bold-large">dp[i][1] = max(dp[i - 1][0], dp[i - 1][2]) + b[i]</span> <br>
+                <span class="bold-large">dp[i][2] = max(dp[i - 1][0], dp[i - 1][1]) + c[i]</span> <br>
+            </p>
+    
+            <p>Đáp án bài toán này là <strong>max(dp[n][0->2])</strong>.</p>
+            <p>Độ phức tạp: <strong>O(n)</strong>.</p>
+        </div>
+        <h2 style="text-align: left; color: white;">Bài tập thêm</h2>
+    <div class="chapter-background">
+        <h3 class="subtitle" style="text-align: left; color: white; font-size: 20px;"><strong>Mức độ dễ:</strong></h3>
+        <ul class="content">
+            <li><a class="link" href="https://oj.vnoi.info/problem/atcoder_dp_a">https://oj.vnoi.info/problem/atcoder_dp_a</a></li>
+            <li><a class="link" href="https://oj.vnoi.info/problem/atcoder_dp_b">https://oj.vnoi.info/problem/atcoder_dp_b</a></li>
+            <li><a class="link" href="https://oj.vnoi.info/problem/atcoder_dp_e">https://oj.vnoi.info/problem/atcoder_dp_e</a></li>
+            <li><a class="link" href="https://cses.fi/problemset/task/1633">https://cses.fi/problemset/task/1633</a></li>
+            <li><a class="link" href="https://oj.vnoi.info/problem/atcoder_dp_i">https://oj.vnoi.info/problem/atcoder_dp_i</a></li>
+            <li><a class="link" href="https://cses.fi/problemset/task/1634">https://cses.fi/problemset/task/1634</a></li>
+            <li><a class="link" href="https://cses.fi/problemset/task/1635">https://cses.fi/problemset/task/1635</a></li>
+            <li><a class="link" href="https://cses.fi/problemset/task/1636">https://cses.fi/problemset/task/1636</a></li>
+            <li><a class="link" href="https://oj.vnoi.info/problem/dtdoi">https://oj.vnoi.info/problem/dtdoi</a></li>
+        </ul>
+
+        <h3 class="subtitle" style="text-align: left; color: white; font-size: 20px;"><strong>Mức độ bình thường:</strong></h3>
+        <ul class="content">
+            <li><a class="link" href="https://oj.vnoi.info/problem/atcoder_dp_j">https://oj.vnoi.info/problem/atcoder_dp_j</a></li>
+            <li><a class="link" href="https://oj.vnoi.info/problem/atcoder_dp_k">https://oj.vnoi.info/problem/atcoder_dp_k</a></li>
+            <li><a class="link" href="https://oj.vnoi.info/problem/atcoder_dp_m">https://oj.vnoi.info/problem/atcoder_dp_m</a></li>
+            <li><a class="link" href="https://cses.fi/problemset/task/1637">https://cses.fi/problemset/task/1637</a></li>
+            <li><a class="link" href="https://cses.fi/problemset/task/1639">https://cses.fi/problemset/task/1639</a></li>
+            <li><a class="link" href="https://cses.fi/problemset/task/1640">https://cses.fi/problemset/task/1640</a></li>
+            <li><a class="link" href="https://oj.vnoi.info/problem/nktick">https://oj.vnoi.info/problem/nktick</a></li>
+            <li><a class="link" href="https://oj.vnoi.info/problem/bones">https://oj.vnoi.info/problem/bones</a></li>
+            <li><a class="link" href="https://cses.fi/problemset/task/1093">https://cses.fi/problemset/task/1093</a></li>
+            <li><a class="link" href="https://cses.fi/problemset/task/1745">https://cses.fi/problemset/task/1745</a></li>
+        </ul>
+
+        <h3 class="subtitle" style="text-align: left; color: white; font-size: 20px;"><strong>Mức độ khó:</strong></h3>
+        <ul class="content">
+            <li><a class="link" href="https://oj.vnoi.info/problem/atcoder_dp_n">https://oj.vnoi.info/problem/atcoder_dp_n</a></li>
+            <li><a class="link" href="https://oj.vnoi.info/problem/atcoder_dp_q">https://oj.vnoi.info/problem/atcoder_dp_q</a></li>
+            <li><a class="link" href="https://oj.vnoi.info/problem/atcoder_dp_z">https://oj.vnoi.info/problem/atcoder_dp_z</a></li>
+            <li><a class="link" href="https://oj.vnoi.info/problem/mdolls">https://oj.vnoi.info/problem/mdolls</a></li>
+        </ul>
+        <h2 style="text-align: left; color: white;">Các bước để làm một bài quy hoạch động</h2>
+        <p class="content">Đầu tiên, ta phải biết được các dấu hiệu nhận biết 1 bài quy hoạch động. Thông thường, các bài toán có sử dụng quy hoạch động thường có tính chất là yêu cầu sự tối ưu, bài toán mà có thể dùng được đệ quy và chúng phải có tính lặp lại.</p>
+        <p class="content">Tiếp đến, ta tự định nghĩa mảng dp là gì, có thể dựa trên yêu cầu đề bài mà định nghĩa mảng dp để giải quyết bài toán đấy. Bước này rất quan trọng, các bạn phải tự định nghĩa được mảng dp của mình để có thể giải quyết được bài toán. Nếu bạn không định nghĩa được thì có thể dùng đệ quy rồi từ từ rút về công thức quy hoạch động.</p>
+        <p class="content">Xét tất cả các trường hợp có thể có của bài toán. Ta thiết lập trường hợp cơ sở của bài toán, dựa vào đó ta tính được bài toán con, suy ra được công thức truy hồi của bài toán để tính được đáp án cho cả bài.</p>
+        <p class="content"><strong>Kinh nghiệm:</strong> Quy hoạch động là 1 kĩ thuật rất phổ biến trong thi đấu lập trình nên khi mới bắt đầu học ta phải làm bài thường xuyên, phải rèn luyện để biết cách định nghĩa được mảng dp, rút ra công thức truy hồi. Ta có thể đọc code cũng được nhưng phải hiểu được và tự code lại.</p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

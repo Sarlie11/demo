@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Chivo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="chuong1.css">
+    <title>Chương IV</title>
+</head>
+<body>
+    <div class="chapter-background">
+        <h1 style="text-align: center; color: rgba(70, 221, 176, 1);">CHƯƠNG III: DP RANGE</h1>
+            <p class="content">Đối với một số bài, khi giải quyết chúng ta cần phải xử lí tối ưu trong đoạn [l; r] bất kì nào đó thì ta dùng kĩ thuật dp range.</p>
+        <h2 style="text-align: left; color: white;">Bài toán: VOI20 Bài 1 - Phần thưởng</h2>
+        <p class="content">
+            Link bài: 
+            <a href="https://oj.vnoi.info/problem/voi20_bonus" target="_blank" class="link">
+                https://oj.vnoi.info/problem/voi20_bonus
+            </a>
+        </p>
+        <div class="content">
+            <p class="bold-large">Ý tưởng:</p>
+            <p>Gọi <strong>dp[l][r][k]</strong> là số tổng tiền lớn nhất chọn <strong>k</strong> thẻ trong đoạn <strong>[l; r]</strong>. Ta nên dùng hàm đệ quy để tính cho các trường hợp trong bài này.</p>
+            <p>Gán toàn bộ mảng <strong>dp</strong> bằng <strong>-1</strong> tượng trưng cho việc chưa tìm được đáp án. Khi đệ quy nếu <strong>k == 0</strong> thì trả kết quả bằng <strong>0</strong>, nếu mảng <strong>dp[l][r][k]</strong> khác <strong>-1</strong> thì trả về kết quả. Thử tất cả các trường hợp của đề bài để tính đáp án tối ưu cho từng <strong>dp[l][r][k]</strong>.</p>
+            
+            <p><strong>Trường hợp 1:</strong> Chọn 2 thẻ đầu</p>
+            <p class="bold-large">ans = max(ans, abs(a[l] - a[l + 1]) + f(l + 2, r, k - 1))</p>
+            
+            <p><strong>Trường hợp 2:</strong> Chọn 2 thẻ cuối</p>
+            <p class="bold-large">ans = max(ans, abs(a[r] - a[r - 1]) + f(l, r - 2, k - 1))</p>
+            
+            <p><strong>Trường hợp 3:</strong> Chọn 1 thẻ đầu và 1 thẻ cuối</p>
+            <p class="bold-large">ans = max(ans, abs(a[l] - a[r]) + f(l + 1, r - 1, k - 1))</p>
+            
+            <p><strong>Trường hợp 4:</strong> Loại bỏ 1 thẻ đầu</p>
+            <p class="bold-large">ans = max(ans, f(l + 1, r, k));</p>
+            
+            <p><strong>Trường hợp 5:</strong> Loại bỏ 1 thẻ cuối</p>
+            <p class="bold-large">ans = max(ans, f(l, r - 1, k));</p>
+            
+            <p>Đáp án cho mỗi <strong>dp[l][r][k]</strong> = max của cả 5 trường hợp đó -> <strong>dp[l][r][k] = ans</strong></p>
+        </div>
+        <h3 class="code-title" onclick="toggleCode9()" style="cursor: pointer; color: rgba(70, 221, 176, 1);">
+            CODE
+        </h3>
+        <div id="codeBlock9" class="code-block" style="display: none;">
+            <pre><code>
+    int f(int l, int r, int k){
+        if (k == 0)
+            return 0;
+        if (l >= r)
+            return -1e18;
+        if (dp[l][r][k] != -1)
+            return dp[l][r][k];
+        int ans = -1e18; // Khởi tạo ans
+        ans = max(ans, abs(a[l] - a[l + 1]) + f(l + 2, r, k - 1));
+        ans = max(ans, abs(a[r] - a[r - 1]) + f(l, r - 2, k - 1));
+        ans = max(ans, abs(a[l] - a[r]) + f(l + 1, r - 1, k - 1));
+        ans = max(ans, f(l + 1, r, k));
+        ans = max(ans, f(l, r - 1, k));
+        dp[l][r][k] = ans;
+        return dp[l][r][k];
+    }          
+            </code></pre>
+        </div>       
+        <div id="additionalContent9" style="display: none; font-style: italic;">
+            Đáp án cho cả bài toán : f(1, n, k). Độ phức tạp : O (n ^ 2 * k)
+    </div> 
+        
+
+        <h2 style="text-align: left; color: white; font-size: 20px;"><strong>Bài tập thêm</strong></h2>
+        <div class="chapter-background">
+            <h3 class="subtitle" style="text-align: left; color: white; font-size: 20px;"><strong>Mức độ bình thường:</strong></h3>
+    <ul class="content">
+        <li><a class="link" href="https://cses.fi/problemset/task/1080">https://cses.fi/problemset/task/1080</a></li>
+        <li><a class="link" href="https://usaco.org/index.php?page=viewproblem2&cpid=265">https://usaco.org/index.php?page=viewproblem2&cpid=265</a></li>
+        <li><a class="link" href="https://usaco.org/index.php?page=viewproblem2&cpid=647">https://usaco.org/index.php?page=viewproblem2&cpid=647</a></li>
+        <li><a class="link" href="https://usaco.org/index.php?page=viewproblem2&cpid=1114">https://usaco.org/index.php?page=viewproblem2&cpid=1114</a></li>
+    </ul>
+
+    <h3 class="subtitle" style="text-align: left; color: white; font-size: 20px;"><strong>Mức độ khó:</strong></h3>
+    <ul class="content">
+        <li><a class="link" href="https://codeforces.com/contest/245/problem/H">https://codeforces.com/contest/245/problem/H</a></li>
+        <li><a class="link" href="https://usaco.org/index.php?page=viewproblem2&cpid=994">https://usaco.org/index.php?page=viewproblem2&cpid=994</a></li>
+        <li><a class="link" href="https://codeforces.com/problemset/problem/607/B">https://codeforces.com/problemset/problem/607/B</a></li>
+    </ul>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

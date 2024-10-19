@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Chivo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="chuong1.css">
+    <title>Chương III</title>
+</head>
+<body>
+    <div class="chapter-background">
+        <h1 style="text-align: center; color: rgba(70, 221, 176, 1);">CHƯƠNG III: CÁC BÀI TOÁN LIÊN QUAN ĐẾN DÃY CON</h1>
+            <p class="content">Thông thường các bài dp dãy con kết hợp với một số kĩ thuật khác xử lý trên đoạn như segment tree, BIT, RMQ …</p>
+        <h2 style="text-align: left; color: white;">Bài toán 1: Dãy con tăng dài nhất <em>(bản dễ)</em></h2>
+    <p class="content">
+        Link bài: 
+        <a href="https://oj.vnoi.info/problem/liq" target="_blank" class="link">
+            https://oj.vnoi.info/problem/liq
+        </a>
+    </p>
+    <div class="content">
+        <p class="bold-large">Đề bài:</p>
+        <p>Cho dãy số nguyên gồm <strong>n</strong> phần tử. Hãy cho biết dãy con tăng dài nhất có độ dài là bao nhiêu. Giới hạn: <strong>n <= 1000</strong>.</p>
+
+        <p class="bold-large">Ý tưởng:</p>
+        <p>Gọi <strong>dp[i]</strong> là dãy con dài nhất kết thúc ở vị trí <strong>i</strong>. Ta duyệt <strong>j = 1 -> i - 1</strong> để tính các độ dài các đoạn con.</p>
+        <p>Nếu <strong>a[j] < a[i]</strong> thì cập nhật:</p>
+        <p class="bold-large">dp[i] = max(dp[i], dp[j] + 1)</p>
+
+        <p class="bold-large">Trường hợp cơ sở:</p>
+        <p><strong>dp[1] = 1</strong> do nó bao gồm mình nó.</p>
+        <p>Đáp án bài toán là <strong>max</strong> của <strong>dp[1 -> n]</strong>.</p>
+        <p>Độ phức tạp: <strong>O(n^2)</strong>.</p>
+    </div>
+    <h3 class="code-title" onclick="toggleCode6()" style="cursor: pointer; color: rgba(70, 221, 176, 1);">
+        CODE
+    </h3>
+    <div id="codeBlock6" class="code-block" style="display: none;">
+        <pre><code>
+    dp[1] = 1;
+    for (int i = 2; i <= n; i++)
+        for (int j = 1; j < i; j++)
+            if (a[j] < a[i]) 
+                dp[i] = max(dp[i] , dp[j] + 1);
+    int res = 1;
+    for (int i = 2; i <= n; i++)
+        res = max(res, dp[i]);
+    cout << res;
+        </code></pre>
+    </div>    
+    <div id="additionalContent6" style="display: none; font-style: italic;">
+        Với n lớn hơn (bản khó) , ta dùng một số kĩ thuật khác kết hợp để tối ưu hơn.
+Ở bản khó, bạn thay vì phải duyệt mọi j = 1 -> i - 1 thì bạn sẽ dùng các kĩ thuật để tìm giá trị dp[j] trong [1; i - 1] lớn nhất rồi cập nhật dp[i].
+
+</div>
+    <h2 style="text-align: left; color: white;">Bài toán 2: Dãy WAVIO</h2>
+    <div class="content">
+        <p class="content"> 
+            Link bài: 
+            <a href="https://oj.vnoi.info/problem/spseq" target="_blank" class="link">
+                https://oj.vnoi.info/problem/spseq
+            </a>
+        </p>
+        <p class="bold-large">Đề bài:</p>
+        <p>Tính độ dài dãy số Wavio có các đặc điểm sau:</p>
+        <ul>
+            <li>Độ dài là số lẻ <strong>L = 2N + 1</strong></li>
+            <li><strong>N + 1</strong> số đầu tiên là dãy tăng</li>
+            <li><strong>N + 1</strong> số cuối là dãy giảm</li>
+            <li>2 số cạnh nhau không bằng nhau</li>
+        </ul>
+        <p>Yêu cầu: tìm độ dài dài nhất của dãy Wavio.</p>
+
+        <p class="bold-large">Ý tưởng:</p>
+        <p>Ta có ý tưởng tương tự bài trên chính là tính số dãy con tăng nhưng ta chuẩn bị sẵn 2 mảng:</p>
+        <ul>
+            <li><strong>f1[i]</strong> để tính độ dài dãy con tăng tại vị trí <strong>i</strong>,</li>
+            <li><strong>f2[i]</strong> tính độ dài dãy con giảm tại vị trí <strong>i</strong> bằng cách đảo ngược mảng <strong>a</strong> lại để tính.</li>
+        </ul>
+        <p>Đáp án bài toán là <strong>max</strong> của <strong>min(f1[i], f2[n - i + 1]) * 2 - 1</strong>.</p>
+        <p>Độ phức tạp: <strong>O(n^2)</strong>.</p>
+    </div>
+    <h3 class="code-title" onclick="toggleCode7()" style="cursor: pointer; color: rgba(70, 221, 176, 1);">
+        CODE
+    </h3>
+    <div id="codeBlock7" class="code-block" style="display: none;">
+        <pre><code>
+    for (int i = 1; i <= n; i++){
+        f1[i] = 1;
+        for (int j = 1; j < i; j++){
+            if (a[j] < a[i]){
+                f1[i] = max(f1[i], f1[j] + 1);
+            }
+        }
+    }
+    reverse(a + 1, a + n + 1);
+    for (int i = 1; i <= n; i++){
+        f2[i] = 1;
+        for (int j = 1; j < i; j++){
+            if (a[j] < a[i]){
+                f2[i] = max(f2[i], f2[j] + 1);
+            }
+         }
+    }
+    int res = 0;
+    for (int i = 1; i <= n; i++)
+        res = max(res, min(f1[i], f2[n - i + 1]) * 2 - 1);
+    cout << res;
+        </code></pre>
+    </div>    
+    <div id="additionalContent7" style="display: none; font-style: italic;">
+        Với bài toán này đề yêu cầu n <= 10 ^ 5 nên các bạn tự tối ưu nhé :)))
+
+
+</div>
+    <h2 style="text-align: left; color: white;">Bài toán 3: Tower</h2>
+<p class="content">
+    Link bài: 
+    <a href="https://cses.fi/problemset/task/1073" target="_blank" class="link">
+        https://cses.fi/problemset/task/1073
+    </a>
+</p>
+<p class="bold-large">Đề bài:</p>
+<p>Bạn được cung cấp <strong>n</strong> khối theo một thứ tự nhất định và nhiệm vụ của bạn là xây dựng các tòa tháp bằng cách sử dụng chúng. Bất cứ khi nào hai khối nằm chồng lên nhau, khối trên phải nhỏ hơn khối dưới. Bạn phải xử lý các khối theo thứ tự đã cho. Bạn luôn có thể đặt khối lên trên một tòa tháp hiện có hoặc bắt đầu một tòa tháp mới. Số lượng tòa tháp tối thiểu có thể là bao nhiêu?</p>
+
+<p class="bold-large">Ý tưởng:</p>
+<p>Bài này ta kết hợp <strong>binary search</strong> và <strong>dp lis</strong>. Ta tạo một <strong>vector</strong> để chứa các đỉnh tòa tháp tức là cái khối nhỏ nhất của từng tháp ta đã dựng. Với đỉnh tháp lớn hơn <strong>a[i]</strong> thì ta hoàn toàn có thể đặt cái khối này vào tháp và nếu không tìm được thì ta đành tạo cái khối đó thành một cái tháp mới. Ta nên tìm những thằng có đỉnh tháp lớn hơn <strong>a[i]</strong> mà nhỏ nhất thì bài toán mới tối ưu. <i style="color: gray;">Ở đây mình tối ưu giùm các bạn luôn rồi á ;-;.</i></p>
+
+<p>Độ phức tạp: <strong>O(n * logn)</strong></p>
+<h3 class="code-title" onclick="toggleCode8()" style="cursor: pointer; color: rgba(70, 221, 176, 1);">
+    CODE
+</h3>
+<div id="codeBlock8" class="code-block" style="display: none;">
+    <pre><code>
+    cin >> n;
+    int x; cin >> x;
+    tower.push_back(x);
+    for (int i = 2; i <= n; i++){
+        cin >> x;
+        int l = 0, r = tower.size();
+        int ans = -1;
+        while(l <= r){
+            int mid = (l + r) / 2;
+            if (tower[mid] > x){
+                ans = mid;
+                r = mid - 1;
+            }
+            else l = mid + 1;
+        }
+        if (ans == -1) tower.push_back(x);
+        else tower[ans] = x;
+    }
+    cout << tower.size();
+    </code></pre>
+</div>
+    <h2 style="text-align: left; color: white;">Bài tập thêm</h2>
+    <div class="chapter-background">
+        <h3 class="subtitle" style="text-align: left; color: white; font-size: 20px;"><strong>Mức độ dễ:</strong></h3>
+<ul class="content">
+    <li><a class="link" href="https://cses.fi/problemset/task/1145">https://cses.fi/problemset/task/1145</a></li>
+</ul>
+
+<h3 class="subtitle" style="text-align: left; color: white; font-size: 20px;"><strong>Mức độ bình thường:</strong></h3>
+<ul class="content">
+    <li><a class="link" href="https://codeforces.com/contest/977/problem/F">https://codeforces.com/contest/977/problem/F</a></li>
+</ul>
+
+<h3 class="subtitle" style="text-align: left; color: white; font-size: 20px;"><strong>Mức độ khó:</strong></h3>
+<ul class="content">
+    <li><a class="link" href="https://oj.vnoi.info/problem/gss">https://oj.vnoi.info/problem/gss</a></li>
+    <li><a class="link" href="https://codeforces.com/gym/102951/problem/C">https://codeforces.com/gym/102951/problem/C</a></li>
+    <li><a class="link" href="https://oj.vnoi.info/problem/volis">https://oj.vnoi.info/problem/volis</a></li>
+</ul>
+
+    </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
